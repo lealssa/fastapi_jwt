@@ -1,0 +1,67 @@
+@base = http://127.0.0.1:8000
+
+###
+
+# Login
+# @name token
+POST {{base}}/api/token
+Content-Type: application/x-www-form-urlencoded
+
+username=jose@uol.com.br&password=pedefeijao
+
+###
+
+# Refresh Token
+# @name refresh_token
+POST {{base}}/api/token/refresh
+Content-Type: application/json
+
+{
+    "refresh_token": "{{token.response.body.refresh_token}}"
+}
+
+###
+
+# Get Users
+GET {{base}}/api/users
+Accept: application/json
+Authorization: Bearer {{token.response.body.access_token}}
+
+###
+
+# Get User
+GET {{base}}/api/users/1
+Accept: application/json
+Authorization: Bearer {{token.response.body.access_token}}
+###
+
+# Add User
+POST {{base}}/api/users
+Content-Type: application/json
+
+{
+    "full_name": "José de Jesus",
+    "email": "jose@uol.com.br",
+    "password": "pedefeijao",
+    "password_confirmation": "pedefeijao"
+}
+
+###
+
+# Delete User By ID
+DELETE {{base}}/api/users/1
+Accept: application/json
+Authorization: Bearer {{token.response.body.access_token}}
+
+###
+
+# Change User Password
+POST {{base}}/api/users/me/password
+Content-Type: application/json
+Authorization: Bearer {{token.response.body.access_token}}
+
+{
+    "old_password": "pedefeijao",
+    "new_password": "master",
+    "new_password_confirmation": "master"
+}
